@@ -92,9 +92,12 @@ class MosquitoBroadcast(MycroftSkill):
         self.splitRegex = self.settings.get('splitRegex')
         self.retainFirst = self.settings.get('retainFirst')
         self.retainLast = self.settings.get('retainLast')
+        self.intro = self.settings.get('intro')
+        self.IntroductionMessage = self.settings.get('IntroductionMessage')
         self.last_message = 'There is no last broadcast'
         self.loop_succeeded = False
-
+        if not self.intro:
+           self.IntroductionMessage = ""
         client.on_connect = self.on_connect
         client.on_message = self.on_message
         try:
@@ -121,8 +124,9 @@ class MosquitoBroadcast(MycroftSkill):
         utterance = message.data.get('utterance')
         repeat = re.sub('^.*?' + message.data['Broadcast'], '', utterance)
         self.speak("Your message is broadcasted to all other devices.")
-        client.publish(self.topic, "This is a broadcast message, please pay attention. "+repeat.strip())
-        self.lastbroadcastsend = "This is a broadcast message, please pay attention. "+repeat.strip()
+
+        client.publish(self.topic, self.IntroductionMessage+ " "+repeat.strip())
+        self.lastbroadcastsend = self.IntroductionMessage+ " "+repeat.strip()
 
     def stop(self):
         pass

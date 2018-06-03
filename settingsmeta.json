@@ -48,7 +48,25 @@
                      "value": "0"
                   }
               ]
+          },
+          {
+              "name": "Broadcast Message",
+              "fields": [
+                  {
+                     "name": "IntroductionMessage",
+                     "type": "text",
+                     "label": "Introduction message before broadcast",
+                     "value": "This is a broadcast message, please pay attention"
+                  },
+                  {
+                      "name": "Intro",
+                      "type": "checkbox",
+                      "label": "Use Introduction Message",
+                      "value": "true"
+                  }
+              ]
           }
+
       ]
   }
 }
