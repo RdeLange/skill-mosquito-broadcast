@@ -92,7 +92,7 @@ class MosquitoBroadcast(MycroftSkill):
         self.splitRegex = self.settings.get('splitRegex')
         self.retainFirst = self.settings.get('retainFirst')
         self.retainLast = self.settings.get('retainLast')
-        self.intro = self.settings.get('intro')
+        self.intro = self.settings.get('Intro')
         self.IntroductionMessage = self.settings.get('IntroductionMessage')
         self.last_message = 'There is no last broadcast'
         self.loop_succeeded = False
