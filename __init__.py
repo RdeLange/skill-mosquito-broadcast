@@ -102,7 +102,7 @@ class MosquitoBroadcast(MycroftSkill):
         client.on_message = self.on_message
         try:
             LOG.info("Connecting to host " + self.host + " on port " + self.port)
-            client.connect_async(self.host, int(self.port), 60)
+            client.connect_async(self.host, self.port, 60)
             client.loop_start()
             self.loop_succeeded = True
         except Exception as e:
