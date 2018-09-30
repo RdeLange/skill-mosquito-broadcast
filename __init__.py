@@ -107,7 +107,8 @@ class MosquitoBroadcast(MycroftSkill):
             self.loop_succeeded = True
         except Exception as e:
         #    LOG.error('Error: {0}'.format(e))
-
+            LOG.error('Error: temp')
+            
     @intent_file_handler('RepeatLastBroadcast.intent')
     def repeat_last_message_intent(self):
         self.speak(self.last_message)
