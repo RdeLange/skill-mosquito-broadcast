@@ -68,8 +68,8 @@ Re-read the "Installation" section of the README.md after checkout, there may be
 
 For branch "origin/18.8.1", do the following:
 
-* cd <your mycroft-core directory>
-# When using bash/zsh use source as shown below, otherwise consult the venv documentation
+* cd your mycroft-core directory
+* When using bash/zsh use source as shown below, otherwise consult the venv documentation
 * source .venv/bin/activate
 * cd /opt/mycroft/skills/rdelange-mosquito-speak/
 * pip install -r requirements.txt
