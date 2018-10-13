@@ -72,7 +72,7 @@ cd <your mycroft-core directory>
 # When using bash/zsh use source as shown below, otherwise consult the venv documentation
 source .venv/bin/activate
 cd /opt/mycroft/skills/rdelange-mosquito-speak/
-pip install -r requirements.txt
+ pip install -r requirements.txt
 
 
 
