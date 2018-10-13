@@ -59,20 +59,20 @@ Example of broadcast:
 
 The following commands installs the skill manually, replace branch "origin/18.8.1" below with the branch that best corresponds to the mycroft core version you are running:
 
-cd /opt/mycroft/skills/
-git clone https://github.com/RdeLange/skill-mosquito-broadcast.git rdelange-mosquito-speak
-cd rdelange-mosquito-speak/
-git checkout origin/18.8.1
+* cd /opt/mycroft/skills/
+* git clone https://github.com/RdeLange/skill-mosquito-broadcast.git rdelange-mosquito-speak
+* cd rdelange-mosquito-speak/
+* git checkout origin/18.8.1
 
 Re-read the "Installation" section of the README.md after checkout, there may be some specifics for the branch you have chosen.
 
 For branch "origin/18.8.1", do the following:
 
-cd <your mycroft-core directory>
+* cd <your mycroft-core directory>
 # When using bash/zsh use source as shown below, otherwise consult the venv documentation
-source .venv/bin/activate
-cd /opt/mycroft/skills/rdelange-mosquito-speak/
-pip install -r requirements.txt
+* source .venv/bin/activate
+* cd /opt/mycroft/skills/rdelange-mosquito-speak/
+* pip install -r requirements.txt
 
 
 ## Credits
