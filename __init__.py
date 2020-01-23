@@ -110,7 +110,9 @@ class MosquitoBroadcast(MycroftSkill):
         self.loop_succeeded = False
         try:
             LOG.info("Connecting to host: " + self.host + ", on port: " + str(self.port))
-            client.connect_async(self.host, self.port, 60)
+            #client.connect_async(self.host, self.port, 60)
+            client.connect(self.host, self.port, 60)
+            
             client.loop_start()
             self.loop_succeeded = True
             LOG.info("MQTT Loop Started Successfully")
@@ -134,7 +136,7 @@ class MosquitoBroadcast(MycroftSkill):
         repeat = re.sub('^.*?' + message.data['Broadcast'], '', utterance)
         #self.speak("Your message is broadcasted to all other devices.")
         self.speak_dialog('send_broadcast')
-
+        print(self.topic)
         client.publish(self.topic, self.IntroductionMessage+ " "+repeat.strip())
         self.lastbroadcastsend = self.IntroductionMessage+ " "+repeat.strip()
 
