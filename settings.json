@@ -1,1 +1,0 @@
-{"__mycroft_skill_firstrun": false, "IntroductionMessage": "This is a broadcast message, please pay attention", "host": "192.168.178.100", "retainFirst": 0, "not_owner": true, "port": 1883, "splitRegex": "", "retainLast": 0, "Intro": true, "topic": "cdl/broadcast"}

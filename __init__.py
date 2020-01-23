@@ -1,19 +1,5 @@
 """
-skill mosquito-speak
-Copyright (C) 2017  Carsten Agerskov
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+skill mosquito-broadcast
 """
 
 from __future__ import unicode_literals
@@ -86,29 +72,51 @@ class MosquitoBroadcast(MycroftSkill):
             LOG.error('Error: {0}'.format(e))
 
     def initialize(self):
-        self.host = self.settings.get('host')
-        self.port = int(self.settings.get('port'))
-        self.topic = self.settings.get('topic')
+        self.settings.set_changed_callback(self.on_websettings_changed)
+        self.on_websettings_changed()
+        self.loop_succeeded = False
+        if not self.intro:
+           self.IntroductionMessage = ""
+        client.on_connect = self.on_connect
+        client.on_message = self.on_message
+        if self._is_setup:
+            self.mqtt_init()
+
+    def on_websettings_changed(self):  # called when updating mycroft home page
+        self._is_setup = False
+        self.host = self.settings.get('host',"127.0.0.1")
+        self.port = int(self.settings.get('port',1884))
+        self.topic = self.settings.get('topic',"Mycroft/broadcast")
         self.splitRegex = self.settings.get('splitRegex')
         self.retainFirst = self.settings.get('retainFirst')
         self.retainLast = self.settings.get('retainLast')
         self.intro = self.settings.get('Intro')
         self.IntroductionMessage = self.settings.get('IntroductionMessage')
         self.last_message = 'There is no last broadcast'
-        self.loop_succeeded = False
-        if not self.intro:
-           self.IntroductionMessage = ""
-        client.on_connect = self.on_connect
-        client.on_message = self.on_message
         try:
-            LOG.info("Connecting to host " + self.host + " on port " + str(self.port))
+            client
+            LOG.info('Client exist')
+            client.loop_stop()
+            client.disconnect()
+            LOG.info('Stopped old client loop')
+        except NameError:
+            client = mqtt.Client()
+            LOG.info('Client re-created')
+        LOG.info("Websettings Changed! " + self.host + ", " + str(self.port))
+        self.mqtt_init()
+        self._is_setup = True
+
+    def mqtt_init(self):  # initializes the MQTT configuration and subscribes to its own topic
+        self.loop_succeeded = False
+        try:
+            LOG.info("Connecting to host: " + self.host + ", on port: " + str(self.port))
             client.connect_async(self.host, self.port, 60)
             client.loop_start()
             self.loop_succeeded = True
+            LOG.info("MQTT Loop Started Successfully")
         except Exception as e:
             LOG.error('Error: {0}'.format(e))
-            
-            
+
     @intent_file_handler('RepeatLastBroadcast.intent')
     def repeat_last_message_intent(self):
         self.speak(self.last_message)
@@ -124,7 +132,8 @@ class MosquitoBroadcast(MycroftSkill):
         # Remove everything up to the broadcast keyword and publish that on the mqtttopic
         utterance = message.data.get('utterance')
         repeat = re.sub('^.*?' + message.data['Broadcast'], '', utterance)
-        self.speak("Your message is broadcasted to all other devices.")
+        #self.speak("Your message is broadcasted to all other devices.")
+        self.speak_dialog('send_broadcast')
 
         client.publish(self.topic, self.IntroductionMessage+ " "+repeat.strip())
         self.lastbroadcastsend = self.IntroductionMessage+ " "+repeat.strip()
